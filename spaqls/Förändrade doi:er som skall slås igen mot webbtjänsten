@@ -1,0 +1,27 @@
+#Förändrade doi:er som skall slås igen mot webbtjänsten
+#Bad DOI:s being edited
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#>
+PREFIX mods_m: <http://swepub.kb.se/mods/model#> 
+SELECT DISTINCT
+?DOIViolation 
+?Record 
+?_identifierValue
+?_doi 
+?_violatingData
+WHERE
+{
+GRAPH <http://swepub.kb.se/SwePubAnalysis/Validation/DOI#graph>
+{
+?DOIViolation swpa_m:relatedRecord ?Record .
+?DOIViolation a swpa_m:DOIViolation .
+?DOIViolation swpa_m:violatingData ?_violatingData .
+}
+?Record a mods_m:Record .
+?Mods mods_m:hasIdentifier ?IdentityDOI .
+?Record mods_m:hasMods ?Mods .
+?IdentityDOI mods_m:identifierValue ?_identifierValue .
+?IdentityDOI mods_m:doiValue ?_doi .
+?IdentityDOI mods_m:type ?_type .
+#Checking those changed 
+FILTER(xsd:string( ?_doi ) != xsd:string(?_violatingData))
+}
