@@ -1,1 +1,16 @@
-#Lista med organisationskoder och labelsSELECT DISTINCT?_id?_labelWHERE{?ResearchOrganization a swpa_m:ResearchOrganization .?ResearchOrganization rdfs:label ?_label .?ResearchOrganization swpa_m:hasIdentity ?Identity .?Identity swpa_m:id ?_id .?Identity swpa_m:authority ?_authority .FILTER(lang(?_label) = 'sv' )FILTER(?_authority = "swepub"^^xsd:string)}ORDER BY ASC( ?_label )/Jürgen
+#Lista med organisationskoder och labels
+
+SELECT DISTINCT
+?_id
+?_label
+WHERE
+{
+?ResearchOrganization a swpa_m:ResearchOrganization .
+?ResearchOrganization rdfs:label ?_label .
+?ResearchOrganization swpa_m:hasIdentity ?Identity .
+?Identity swpa_m:id ?_id .
+?Identity swpa_m:authority ?_authority .
+FILTER(lang(?_label) = 'sv' )
+FILTER(?_authority = "swepub"^^xsd:string)
+}
+ORDER BY ASC( ?_label )
