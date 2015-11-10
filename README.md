@@ -1,5 +1,6 @@
 # SwePubs SPARQL-bibliotek
-Här kommer SwePub-projektet - och kanske även du - att lägga upp SPARQL-frågor som kan vara användbara för andra.
+Här kommer SwePub-projektet - och kanske även du - att lägga upp SPARQL-frågor som kan vara användbara för andra.   
+Källkoden för SwePubs webbgränssnitt hittar du på https://github.com/libris/swepubanalys
 
 ## Hur ställer jag SPARQL-frågor mot SwePub?
 För att ställa frågor mot SwePub kan man antingen använda gränssnittet på http://info.swepub.kb.se eller gå direkt mot SwePubs Sparql-endpoint på http://virhp07.libris.kb.se/sparql/. 
