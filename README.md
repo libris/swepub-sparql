@@ -19,9 +19,9 @@ Nedan ett exempel på anrop genom i Groovy med paketet WsLite som returnerar sva
 En bra indroduktion och steg-för-steg-genomgång i hur du använder den visuella [Query-generatorn](http://hp07.libris.kb.se/ExploreAndQuery/) finner du på [LIBRIS-bloggen](http://librisbloggen.kb.se/2014/06/18/swepub-analysis-you-can-sparql/).
 
 ## Men all data är ju fraktionerad. Hur får jag ut riktiga poster med flervärdesfält?
-Det finns många approacher till detta. 
+Det finns många approacher till detta. SwePub projektet använder idag två.
 ### Lokalt datalager
-Den första lösningen bygger på att man ser querysresultatet som en grund för ett lokalt datalager och flyttar över resultatet till tabeller i en lokal relationsdatabas.
+Den första lösningen bygger på att man ser querysresultatet som en grund för ett lokalt datalager och flyttar över resultatet till tabeller i en lokal relationsdatabas. Det här används för att få ut data till webbversionen av analysverktyget SpotFire, som vi erbjuder alla med poster i SwePub.
 ### Serialisera queryresultatet
 När SwePub internt serialiserar data för vidare indexering i Elasticsearch använder vi ett bibliotek som tar ett resultat i Turtle-format, letar reda på vilka triplar som hör till samma subjekt och slår ihop dessa till en "post" i JSON-LD-format.
 TODO: Lägg in exempel i repot hur man gör.
