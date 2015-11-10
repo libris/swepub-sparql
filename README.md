@@ -18,6 +18,10 @@ Nedan ett exempel på anrop genom i Groovy med paketet WsLite som returnerar sva
 ## Hur formulerar jag mina SPARQL-frågor?
 En bra indroduktion och steg-för-steg-genomgång i hur du använder den visuella [Query-generatorn](http://hp07.libris.kb.se/ExploreAndQuery/) finner du på [LIBRIS-bloggen](http://librisbloggen.kb.se/2014/06/18/swepub-analysis-you-can-sparql/).
 
+## Det här var ju bra, men all data är ju fraktionerad. Hur får jag ut riktiga poster med flervärdesfält?
+Det finns många approacher till detta. 
+
+TODO: utveckla...
 ##TODO
 * how-to och länkar till informationssidor
 * fler querys
