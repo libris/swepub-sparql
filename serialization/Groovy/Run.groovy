@@ -7,10 +7,10 @@ import wslite.rest.ContentType
 import wslite.rest.RESTClient
 
 println "Init done"
-def turtle = makeSparqlRequest(new File("query.sparql").text)
+def turtle = makeSparqlRequest(new File("../query.sparql").text)
 def expanded = JsonLdProcessor.fromRDF(turtle,
         [format: "text/turtle", useNativeTypes: true] as JsonLdOptions)
-Map context = new File("context.jsonld").withInputStream JsonUtils.&fromInputStream
+Map context = new File("../context.jsonld").withInputStream JsonUtils.&fromInputStream
 def compacted = JsonLdProcessor.frame(expanded, context, [embed: true] as JsonLdOptions)
 
 println turtle + "\n=====================\n"
