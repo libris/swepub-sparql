@@ -1,0 +1,12 @@
+# Generated from Linked Data Browser navigation history
+SELECT DISTINCT
+COUNT(?Abstract)
+?_lang
+WHERE
+{
+?IdentifiableRecord mods_m:hasAbstract ?Abstract .
+?Abstract mods_m:lang ?_lang .
+#FILTER(xsd:string(?_lang) in ("swe"))
+}
+Group By ?_lang
+order by ?_lang
