@@ -1,0 +1,11 @@
+#Work in progress
+SELECT 
+Distinct ?subclass ?_label
+WHERE {
+?subclass rdfs:subClassOf swpa_m:Match.
+?Match a swpa_m:Match .
+?subclass rdfs:label ?_label
+
+
+
+  }
