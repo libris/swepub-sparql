@@ -1,0 +1,41 @@
+# Den här frågan listar alla lokala namnformer kopplade till ett lokalt användarid, och där antalet namnformer är fler än 2
+# Ändra värdet på rad 37 till ">1" om du vill ha alla namnformer som hör till feltypen "Multiple Variants of Name"
+PREFIX xlink: <http://www.w3.org/1999/xlink#> 
+PREFIX mods_m: <http://swepub.kb.se/mods/model#>
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#>
+SELECT DISTINCT ?_href ?_nameNorm ?_name ?variantCount
+
+WHERE{
+?Name xlink:href ?_href .
+?Name mods_m:nameValueNormalized ?_nameNorm .
+?Name foaf:name ?_name .
+{
+SELECT DISTINCT
+?_href ?_authority
+count(distinct ?_nameNorm ) as ?variantCount
+WHERE
+{
+?Record a mods_m:Record .
+?Record mods_m:hasMods ?Mods .
+?Mods mods_m:hasName ?Name .
+?Name a mods_m:Name .
+?Name xlink:href ?_href .
+?Name mods_m:authority ?_authority .
+?Name mods_m:nameValueNormalized ?_nameNorm .
+
+FILTER ( xsd:string(?_authority) IN ( 'liu' ) ) 
+# FILTER ( xsd:string(?_href) NOT IN ( 'n / a' ) ) # Om det är något värde ni vill undanhålla från resultatet
+
+MINUS
+{
+?Violation a swpa_m:HREFViolation .
+?Violation swpa_m:relatedRecord ?Record .
+}
+
+}
+GROUP BY ?_authority ?_href 
+HAVING ( count(distinct ?_nameNorm ) > 2)
+ORDER BY DESC(count(distinct ?_nameNorm ) )
+}
+}
+ORDER BY DESC(?variantCount) ?_href ?_nameNorm 
