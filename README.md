@@ -42,8 +42,8 @@ Som underlag för att skapa egna sökfrågor för mer riktade analyser beskrivs 
 #### Organisationer och deras poster
 
 ##### Datamodell baserad på originaldata i MODS format
-
-[ReportingSites_raw_model]
+![]
+(https://github.com/libris/swepub-sparql/blob/master/images/ReportingSites_raw_model.png)
 
 ##### Sökfråga
 ```
@@ -65,8 +65,8 @@ LIMIT 100
 
 ##### Visualiserad sökfråga
 
-[ReportingSites_raw_query]
-
+![ReportingSites_raw_query]
+(https://github.com/libris/swepub-sparql/blob/master/images/Raw-query.png)
 ##### Resultatlista
 
 | RECORD	| _RECORDCONTENTSOURCEVALUE
@@ -77,7 +77,7 @@ LIMIT 100
 
 #### Förkortad datamodell baserad på originaldata i MODS format
 
-[ReportingSites_shortcutted_model]
+![](https://github.com/libris/swepub-sparql/blob/master/images/ReportingSites_shortcutted_model.png)
 
 ##### Förkortad sökfråga
 ```
@@ -96,7 +96,8 @@ LIMIT 100
 ```
 #####Visualiserad sökfråga
 
-[ReportingSites_shortcutted_query]
+
+![](https://github.com/libris/swepub-sparql/blob/master/images/ReportingSites_shortcutted_query.png)
 
 #####Resultatlista
 
@@ -108,7 +109,7 @@ LIMIT 100
 
 ####Förenklad datamodell baserad på sökfråga i MODS format
 
-[ReportingSites_enriched_model]
+![](https://github.com/libris/swepub-sparql/blob/master/images/ReportingSites_enriched_model.png)
 
 #####Förenklad sökfråga
 ```
@@ -133,6 +134,7 @@ LIMIT 100
 #####Visualiserad sökfråga
 
 [ReportingSites_enriched_query]
+![](https://github.com/libris/swepub-sparql/blob/master/images/ReportingSites_enriched_query.png)
 
 ##### Resultatlista
 
