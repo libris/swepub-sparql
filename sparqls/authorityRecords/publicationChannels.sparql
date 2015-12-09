@@ -1,0 +1,41 @@
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#>
+SELECT DISTINCT
+xsd:string(?_onetitle) as ?title
+xsd:string(?_issn) as ?printISN
+xsd:string(?_eissn) as ?electronicISSN
+xsd:int(?_weight) as ?NorwegianLevel
+xsd:int(?_weight7) as ?FinnishLevel
+xsd:int(?_weight8) as ?DanishLevel
+?SwedishLevel
+WHERE
+{
+?Journal a swpa_m:Journal .
+?Journal swpa_m:onetitle ?_onetitle .
+OPTIONAL { ?Journal swpa_m:eissn ?_eissn . }
+OPTIONAL { ?Journal swpa_m:issn ?_issn . }
+FILTER ( bound(?_issn) || bound(?_eissn) )
+
+?Journal swpa_m:hasRank ?SwedishRank .
+?SwedishRank a swpa_m:SwedishRank .
+?SwedishRank swpa_m:weight ?SwedishLevel .
+
+OPTIONAL
+{
+?Journal swpa_m:hasRank ?NorwegianRank .
+?NorwegianRank a swpa_m:NorwegianRank .
+?NorwegianRank swpa_m:weight ?_weight .
+}
+OPTIONAL
+{
+?Journal swpa_m:hasRank ?FinnishRank .
+?FinnishRank a swpa_m:FinnishRank .
+?FinnishRank swpa_m:weight ?_weight7 .
+}
+OPTIONAL
+{
+?Journal swpa_m:hasRank ?DanishRank .
+?DanishRank a swpa_m:DanishRank .
+?DanishRank swpa_m:weight ?_weight8 .
+}
+}
+LIMIT 100000
