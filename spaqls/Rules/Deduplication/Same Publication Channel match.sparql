@@ -1,0 +1,24 @@
+#Same Publication Channel match
+CONSTRUCT
+{
+?uriMatch a swpa_m:PublicationChannelMatch .
+?Mods1 swpa_m:hasMatch ?uriMatch .
+?uriMatch swpa_m:hasTarget ?Mods2 .
+?uriMatch swpa_m:weight “0.05”^^xsd:float .
+}
+WHERE
+{
+{
+SELECT DISTINCT
+bif:sprintf_iri(‘http://swepub.kb.se/SwePubAnalysis/data#PublicationChannelMatch__%s’, bif:substring(sql:localName( ?Mods1),10,1000)) as ?uriMatch
+?Mods1 ?Mods2
+WHERE
+{
+#There is already some match between two records
+?Mods1 swpa_m:hasMatch ?Match .
+?Match swpa_m:hasTarget ?Mods2 .?Mods1 a mods_m:Mods .
+?Mods1 swpa_m:publishedIn ?Journal .?Mods2 a mods_m:Mods .
+?Mods2 swpa_m:publishedIn ?Journal .
+}
+}
+}

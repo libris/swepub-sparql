@@ -1,0 +1,26 @@
+# Same Creator Count
+CONSTRUCT
+{
+?uriMatch a swpa_m:CreatorCountMatch .
+?Mods1 swpa_m:hasMatch ?uriMatch .
+?uriMatch swpa_m:hasTarget ?Mods2 .
+?uriMatch swpa_m:compares ?count .
+?uriMatch swpa_m:weight ‘0.1’^^xsd:float .
+}
+WHERE
+{
+{
+SELECT DISTINCT
+bif:sprintf_iri(‘http://swepub.kb.se/SwePubAnalysis/data#CreatorCountMatch__%s’, ?localid) as ?uriMatch
+?Mods1 ?Mods2 ?count
+WHERE
+{
+#There is already some match between two records
+?Mods1 swpa_m:hasMatch ?Match .
+MINUS { ?Match a swpa_m:PublicationChannelMatch }
+?Match swpa_m:hasTarget ?Mods2 .?Mods1 a mods_m:Mods .
+?Mods1 swpa_m:localID ?localid .
+?Mods1 swpa_m:creatorCount ?count .?Mods2 a mods_m:Mods .
+?Mods2 swpa_m:creatorCount ?count .
+}}
+}

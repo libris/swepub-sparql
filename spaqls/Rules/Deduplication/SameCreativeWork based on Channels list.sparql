@@ -1,0 +1,62 @@
+#SameCreativeWork based on Channels list
+CONSTRUCT
+{
+?Record1 swpa_m:sameCreativeWorkAs ?Record2 .
+}
+WHERE
+{#Exclude those already classified as same publication
+MINUS
+{
+?Record1 swpa_m:samePublicationAs ?Record2 .
+}{
+SELECT
+?Record1
+?Record2
+sum( ?_weight ) as ?totalweight
+WHERE
+{
+?Record1 mods_m:hasMods ?Mods1 .
+?Record1 a swpa_m:DeduplicationEligible .
+?Record2 mods_m:hasMods ?Mods2 .
+?Record2 a swpa_m:DeduplicationEligible .# exclude white listed
+MINUS
+{
+?WhiteListed a swpa_m:CreativeWorkInstanceDuplicateAdjudication .
+?WhiteListed swpa_m:isDuplicate 0 .
+?WhiteListed swpa_m:compares ?Record1 .
+?WhiteListed swpa_m:compares ?Record2 .
+}
+{
+SELECT DISTINCT
+?Mods1
+?Match
+?_weight
+WHERE
+{
+?Mods1 a mods_m:Mods .
+?Mods1 swpa_m:hasMatch ?Match .
+?Match swpa_m:weight ?_weight .
+}
+}
+?Match swpa_m:hasTarget ?Mods2 .
+}
+GROUP BY ?Record1 ?Record2
+HAVING ( sum( xsd:float(?_weight) ) > 1)
+}?Record1 mods_m:hasMods ?Mods1 .
+?Record2 mods_m:hasMods ?Mods2 .
+#Channel check – exclude records that are published in recognized channels
+MINUS
+{
+?Mods1 swpa_m:publishedIn ?Channel1 .
+?Channel1 a swpa_m:Journal .
+?Channel1 swpa_m:hasRank ?Rank1 .
+?Rank1 a swpa_m:SwedishRank .
+?Rank1 swpa_m:weight ?_weight1 .
+?Mods2 swpa_m:publishedIn ?Channel2 .
+?Channel2 a swpa_m:Journal .
+?Channel2 swpa_m:hasRank ?Rank2 .
+?Rank2 a swpa_m:SwedishRank .
+?Rank2 swpa_m:weight ?_weight2 .
+FILTER ( ?_weight1 > 0 && ?_weight2 > 0 )
+}
+}

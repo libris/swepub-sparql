@@ -1,0 +1,33 @@
+#Same Alternative Sub Title match
+CONSTRUCT
+{
+?uriMatch a swpa_m:AlternativeSubTitleMatch .
+?Mods1 swpa_m:hasMatch ?uriMatch .
+?uriMatch swpa_m:hasTarget ?Mods2 .
+?uriMatch swpa_m:compares ?SubTitle1 .
+?uriMatch swpa_m:compares ?SubTitle2 .
+?uriMatch swpa_m:weight ?weight
+}
+WHERE
+{
+{
+SELECT
+bif:sprintf_iri(‘http://swepub.kb.se/SwePubAnalysis/data#AlternativeSubTitleMatch__%s’, ?localid) as ?uriMatch
+?Mods1 ?Mods2 ?SubTitle1 ?SubTitle2
+bif:__min(xsd:float(strlen(?subTitleValue)) / 100.0, 0.3) as ?weightWHERE
+{
+FILTER( ?Mods1 != ?Mods2 )?Mods1 mods_m:hasTitleInfo ?TitleInfo1 .
+?Mods1 a mods_m:Mods .
+?Mods1 swpa_m:localID ?localid .
+?TitleInfo1 a mods_m:TitleInfo .
+?TitleInfo1 mods_m:type ‘alternative’^^xsd:string .
+?TitleInfo1 mods_m:hasSubTitle ?SubTitle1 .
+?SubTitle1 mods_m:subTitleValueNormalized ?subTitleValue .?Mods2 mods_m:hasTitleInfo ?TitleInfo2 .
+?Mods2 a mods_m:Mods .
+?TitleInfo2 a mods_m:TitleInfo .
+?TitleInfo2 mods_m:type ‘alternative’^^xsd:string .
+?TitleInfo2 mods_m:hasSubTitle ?SubTitle2 .
+?SubTitle2 mods_m:subTitleValueNormalized ?subTitleValue .FILTER ( strlen( ?subTitleValue) > 15 )
+}
+}
+}

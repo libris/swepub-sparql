@@ -1,0 +1,46 @@
+# Same Title match
+CONSTRUCT
+{
+?uriMatch a swpa_m:TitleMatch .
+?Mods1 swpa_m:hasMatch ?uriMatch .
+?uriMatch swpa_m:hasTarget ?Mods2 .
+?uriMatch swpa_m:compares ?Title1 .
+?uriMatch swpa_m:compares ?Title2 .
+?uriMatch swpa_m:weight ?weight
+}
+WHERE
+{
+{
+SELECT ?Mods1 ?Mods2 ?Title1 ?Title2
+bif:__max(0.5,bif:__min(xsd:float(strlen(?titlevalue)) / 100.0, 0.9)) as ?weight
+bif:sprintf_iri(‘http://swepub.kb.se/SwePubAnalysis/data#TitleMatch__%s’, ?localid) as ?uriMatch
+WHERE
+{
+?Mods1 swpa_m:localID ?localid .
+?Mods2 a mods_m:Mods .
+MINUS
+{
+?TitleInfo1 mods_m:type ‘alternative’^^xsd:string
+}
+MINUS
+{
+?TitleInfo2 mods_m:type ‘alternative’^^xsd:string
+}{
+SELECT DISTINCT
+?Mods1 ?Mods2 ?Title1 ?Title2 ?TitleInfo1 ?TitleInfo2 ?titlevalue
+WHERE
+{
+?Mods1 mods_m:hasTitleInfo ?TitleInfo1 .
+?Mods1 a mods_m:Mods .
+?TitleInfo1 a mods_m:TitleInfo .?TitleInfo1 mods_m:hasTitle ?Title1 .
+?Title1 mods_m:titleValueNormalized ?titlevalue .?Mods2 mods_m:hasTitleInfo ?TitleInfo2 .
+?TitleInfo2 a mods_m:TitleInfo .
+?TitleInfo2 mods_m:hasTitle ?Title2 .
+?Title2 mods_m:titleValueNormalized ?titlevalue .FILTER( ?Mods1 != ?Mods2 )
+FILTER ( strlen( ?titlevalue) > 15 )
+}
+LIMIT 1000000
+}
+}
+}
+}

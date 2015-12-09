@@ -1,0 +1,46 @@
+#SamePublicationAs and SameCreativeWork with matching weight
+CONSTRUCT
+{
+?Record1 swpa_m:samePublicationAs ?Record2 .
+?Record1 swpa_m:sameCreativeWorkAs ?Record2 .
+}
+WHERE
+{
+SELECT
+?Record1
+?Record2
+sum( ?_weight ) as ?totalweight
+WHERE
+{
+?Record1 mods_m:hasMods ?Mods1 .
+?Record1 a swpa_m:DeduplicationEligible .
+?Record2 mods_m:hasMods ?Mods2 .
+?Record2 a swpa_m:DeduplicationEligible .# Must have channel match
+?Mods1 swpa_m:hasMatch ?ChMatch .
+?ChMatch a ?MatchType .
+FILTER ( ?MatchType IN ( swpa_m:PublicationChannelMatch , swpa_m:RelatedItemMatch ))
+?ChMatch swpa_m:hasTarget ?Mods2 .# exclude white listed
+MINUS
+{
+?WhiteListed a swpa_m:CreativeWorkInstanceDuplicateAdjudication .
+?WhiteListed swpa_m:isDuplicate 0 .
+?WhiteListed swpa_m:compares ?Record1 .
+?WhiteListed swpa_m:compares ?Record2 .
+}
+{
+SELECT DISTINCT
+?Mods1
+?Match
+?_weight
+WHERE
+{
+?Mods1 a mods_m:Mods .
+?Mods1 swpa_m:hasMatch ?Match .
+?Match swpa_m:weight ?_weight .
+}
+}
+?Match swpa_m:hasTarget ?Mods2 .
+}
+GROUP BY ?Record1 ?Record2
+HAVING ( sum( xsd:float(?_weight) ) > 1)
+}

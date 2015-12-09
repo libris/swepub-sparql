@@ -1,0 +1,13 @@
+# Identifiable record tagging
+CONSTRUCT
+{
+?Mods a swpa_m:IdentifiableRecord.
+}
+WHERE
+{
+?Mods a mods_m:Mods .
+?Mods mods_m:hasIdentifier ?Identifier .
+?Identifier a mods_m:Identifier .
+?Identifier mods_m:type ?_type .
+FILTER(?_type IN ( “doi”^^xsd:string, “isbn”^^xsd:string, “isi”^^xsd:string, “patent_number”^^xsd:string, “pmid”^^xsd:string, “scopus”^^xsd:string ))
+}

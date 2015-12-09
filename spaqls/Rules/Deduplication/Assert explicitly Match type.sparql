@@ -1,0 +1,9 @@
+#assert explicitly Match type
+CONSTRUCT
+{
+?Match a swpa_m:Match .
+}
+WHERE
+{
+?Mods swpa_m:hasMatch ?Match .
+}

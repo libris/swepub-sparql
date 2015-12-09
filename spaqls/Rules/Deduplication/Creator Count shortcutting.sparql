@@ -1,0 +1,22 @@
+# Creator Count shortcutting
+CONSTRUCT
+{
+?Mods swpa_m:creatorCount ?count .
+}
+WHERE
+{
+{
+SELECT DISTINCT
+?Mods
+xsd:integer(?_noteValue) as ?count
+WHERE
+{
+?Mods a mods_m:Mods .
+?Mods mods_m:hasNote ?Note .
+?Note a mods_m:Note .
+?Note mods_m:type ?_type .
+?Note mods_m:noteValue ?_noteValue .
+?Note mods_m:type “creatorCount”^^xsd:string .
+}
+}
+}

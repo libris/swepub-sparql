@@ -1,0 +1,13 @@
+#DOI match weight for KON publication type
+CONSTRUCT
+{
+?DOIIdentityMatch swpa_m:weight “0.4”^^xsd:float
+}
+WHERE
+{
+?DOIIdentityMatch a swpa_m:DOIIdentityMatch .
+?Mods swpa_m:hasMatch ?DOIIdentityMatch .?Mods mods_m:hasGenre ?Genre .
+?Genre mods_m:authority ?_authority .
+?Genre mods_m:authority “svep”^^xsd:string .
+?Genre mods_m:genreValue “kon”^^xsd:string .
+}

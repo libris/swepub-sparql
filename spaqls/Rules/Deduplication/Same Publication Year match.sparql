@@ -1,0 +1,30 @@
+# Same Publication Year match
+CONSTRUCT
+{
+?uriMatch a swpa_m:PublicationYearMatch .
+?Mods1 swpa_m:hasMatch ?uriMatch .
+?uriMatch swpa_m:hasTarget ?Mods2 .
+?uriMatch swpa_m:compares ?year1 .
+?uriMatch swpa_m:compares ?year2 .
+?uriMatch swpa_m:weight ‘0.11’^^xsd:float .
+}
+WHERE
+{
+{
+SELECT DISTINCT
+bif:sprintf_iri(‘http://swepub.kb.se/SwePubAnalysis/data#PublicationYearMatch__%s’, ?localid) as ?uriMatch
+?Mods1 ?Mods2 ?year1 ?year2
+WHERE
+{
+?Mods1 swpa_m:localID ?localid .
+?Mods1 swpa_m:publicationYear ?year1 .?Mods2 swpa_m:publicationYear ?year2 .FILTER( bif:abs(( ?year1 – ?year2)) <= 1 ){
+SELECT DISTINCT ?Mods1 ?Mods2
+WHERE
+{
+#There is already some match between two records
+?Mods1 swpa_m:hasMatch ?Match .
+?Match swpa_m:hasTarget ?Mods2 .
+}
+}}
+}
+}

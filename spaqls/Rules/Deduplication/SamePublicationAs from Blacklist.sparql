@@ -1,0 +1,20 @@
+#SamePublicationAs from Blacklist
+CONSTRUCT
+{
+?Record1 swpa_m:possiblySameAs ?Record2 .
+?Record1 swpa_m:samePublicationAs ?Record2 .
+?Record1 swpa_m:sameCreativeWorkAs ?Record2 .
+}
+WHERE
+{
+SELECT
+?Record1
+?Record2
+WHERE
+{
+?BlaclListed a swpa_m:CreativeWorkInstanceDuplicateAdjudication .
+?BlaclListed swpa_m:isDuplicate 1 .
+?BlaclListed swpa_m:compares ?Record1 .
+?BlaclListed swpa_m:compares ?Record2 .
+}
+}

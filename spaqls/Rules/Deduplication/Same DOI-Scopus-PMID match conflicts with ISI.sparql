@@ -1,0 +1,32 @@
+# same DOI/Scopus/PMID match conflicts with ISI
+CONSTRUCT
+{
+?uriMatch a swpa_m:ISIIdentityMatchConflict .
+?Mods1 swpa_m:hasMatch ?uriMatch .
+?uriMatch swpa_m:hasTarget ?Mods2 .
+?uriMatch swpa_m:compares ?Identifier1 .
+?uriMatch swpa_m:compares ?Identifier2 .
+?uriMatch swpa_m:weight “-0.9″^^xsd:float .
+}
+WHERE
+{
+{
+SELECT
+bif:sprintf_iri(‘http://swepub.kb.se/SwePubAnalysis/data#ISIIdentityMatchConflict__%s’, bif:substring(sql:localName( ?Mods1 ),7,1000)) as ?uriMatch
+?Mods1 ?Mods2 ?Identifier1 ?Identifier2
+WHERE
+{
+?Mods1 a mods_m:Mods .
+?Mods1 swpa_m:hasMatch ?IdentityMatch .
+?IdentityMatch a ?MatchType .
+FILTER ( ?MatchType IN ( swpa_m:PMIDIdentityMatch, swpa_m:ScopusIdentityMatch, swpa_m:DOIIdentityMatch ))
+?IdentityMatch swpa_m:hasTarget ?Mods2 .# Check if ISI exists, is valid and does not match?Mods1 mods_m:hasIdentifier ?Identifier1 .
+?Identifier1 a ?idtype1 .
+FILTER ( ?idtype1 != swpa_m:InvalidIdentifier )
+?Identifier1 mods_m:isiValue ?isiValue1 .?Mods2 mods_m:hasIdentifier ?Identifier2 .
+?Identifier2 a ?idtype2 .
+FILTER ( ?idtype2 != swpa_m:InvalidIdentifier )
+?Identifier2 mods_m:isiValue ?isiValue2 .FILTER( ?isiValue1 != ?isiValue2 )
+}
+}
+}

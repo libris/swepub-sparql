@@ -1,0 +1,50 @@
+# same start and end page
+CONSTRUCT
+{
+?uriMatch a swpa_m:SamePagesMatch .
+?Mods swpa_m:hasMatch ?uriMatch .
+?uriMatch swpa_m:hasTarget ?Mods2 .
+?uriMatch swpa_m:compares ?Extent .
+?uriMatch swpa_m:compares ?Extent2 .
+?uriMatch swpa_m:weight “0.1”^^xsd:float .
+}
+WHERE
+{{
+SELECT DISTINCT
+bif:sprintf_iri(‘http://swepub.kb.se/SwePubAnalysis/data#SamePagesMatch__%s’, ?localID) as ?uriMatch
+?Mods ?Mods2 ?Extent ?Extent2
+WHERE
+{{
+SELECT DISTINCT ?Mods ?Mods2 ?Extent ?Extent2 ?localID
+WHERE
+{
+?Mods swpa_m:localID ?localID .
+{
+SELECT DISTINCT ?Mods ?Mods2 ?Extent ?Extent2
+WHERE
+{
+?Mods a mods_m:Mods .
+?Mods swpa_m:hasMatch ?Match .
+?Match a ?matchType .
+FILTER ( ?matchType IN ( swpa_m:PublicationChannelMatch, swpa_m:RelatedItemMatch ) )
+?Match swpa_m:hasTarget ?Mods2 .?Mods mods_m:hasRelatedItem ?RelatedItem .
+?RelatedItem mods_m:hasPart ?Part .
+?Part mods_m:hasExtent ?Extent .
+?Extent a mods_m:Extent .
+?Extent mods_m:hasEnd ?EndPage .
+?EndPage mods_m:endValue ?_endValue .
+?Extent mods_m:hasStart ?StartPage .
+?StartPage mods_m:startValue ?_startValue .?Mods2 mods_m:hasRelatedItem ?RelatedItem2 .
+?RelatedItem2 mods_m:hasPart ?Part2 .
+?Part2 mods_m:hasExtent ?Extent2 .
+?Extent2 a mods_m:Extent .
+?Extent2 mods_m:hasEnd ?EndPage2 .
+?EndPage2 mods_m:endValue ?_endValue .
+?Extent2 mods_m:hasStart ?StartPage2 .
+?StartPage2 mods_m:startValue ?_startValue .
+}}
+}
+}
+}
+}
+}

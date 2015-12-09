@@ -1,0 +1,32 @@
+#Same Patent Number
+CONSTRUCT
+{
+?uriMatch a swpa_m:PatentNumberMatch .
+?Mods1 swpa_m:hasMatch ?uriMatch .
+?uriMatch swpa_m:hasTarget ?Mods2 .
+?uriMatch swpa_m:compares ?Identifier1 .
+?uriMatch swpa_m:compares ?Identifier2 .
+?uriMatch swpa_m:weight “0.9”^^xsd:float .
+}
+WHERE
+{
+{
+SELECT
+bif:sprintf_iri(‘http://swepub.kb.se/SwePubAnalysis/data#PatentNumberMatch__%s’, bif:substring(sql:localName( ?Mods1 ),7,1000)) as ?uriMatch
+?Mods1 ?Mods2 ?Identifier1 ?Identifier2 ?pn
+WHERE
+{
+FILTER( ?Mods1 != ?Mods2 )
+?Mods1 mods_m:hasIdentifier ?Identifier1 .
+?Mods1 a mods_m:Mods .
+?Identifier1 a mods_m:Identifier .
+?Identifier1 mods_m:type “patent_number”^^xsd:string .
+?Identifier1 mods_m:identifierValue ?pn .?Mods2 mods_m:hasIdentifier ?Identifier2 .
+?Mods2 a mods_m:Mods .
+?Identifier2 a mods_m:Identifier .
+?Identifier2 mods_m:type “patent_number”^^xsd:string .
+?Identifier2 mods_m:identifierValue ?pn .
+}
+}
+FILTER ( bif:length(?pn) > 10)
+}

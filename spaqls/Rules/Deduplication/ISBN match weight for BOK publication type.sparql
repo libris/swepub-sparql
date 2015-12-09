@@ -1,0 +1,22 @@
+#ISBN match weight for BOK publication type
+CONSTRUCT
+{
+?ISBNIdentityMatch2 swpa_m:weight ?weight
+}
+WHERE
+{{
+SELECT DISTINCT ?Mods count( ?ISBNIdentityMatch ) as ?cnt
+WHERE
+{
+?ISBNIdentityMatch a swpa_m:ISBNIdentityMatch .
+?Mods swpa_m:hasMatch ?ISBNIdentityMatch .?Mods mods_m:hasGenre ?Genre .
+?Genre mods_m:authority ?_authority .
+?Genre mods_m:authority “svep”^^xsd:string .
+?Genre mods_m:genreValue “bok”^^xsd:string .
+}
+GROUP BY ?Mods
+}BIND( 0.8/?cnt as ?weight)
+?Mods2 swpa_m:hasMatch ?ISBNIdentityMatch2 .
+?ISBNIdentityMatch2 a swpa_m:ISBNIdentityMatch .
+FILTER( ?Mods = ?Mods2 )
+}

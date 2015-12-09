@@ -1,0 +1,53 @@
+# Same Author Local ID match
+PREFIX NQUADS: <keep_loop>
+SELECT DISTINCT ?year ?site
+WHERE
+{
+?Mods a mods_m:Mods .
+?Mods swpa_m:publicationYear ?year .
+?Mods mods_m:recordContentSourceValue ?site .
+}
+ORDER BY DESC(?year) ?site#LOOPCONSTRUCT
+{
+?uriMatch a swpa_m:AuthorLocalIDMatch .
+?Mods1 swpa_m:hasMatch ?uriMatch .
+?uriMatch swpa_m:hasTarget ?Mods2 .
+?uriMatch swpa_m:compares ?Name1 .
+?uriMatch swpa_m:compares ?Name2 .
+?uriMatch swpa_m:weight ?weight .
+}
+WHERE
+{
+{
+SELECT DISTINCT
+bif:sprintf_iri(‘http://swepub.kb.se/SwePubAnalysis/data#AuthorLocalIDMatch__%s’, bif:substring(sql:localName( ?Name1),7,1000)) as ?uriMatch
+?Name1 ?Name2 ?auth1 ?auth2 ?nametype1 ?nametype2 ?creatorCount ?Mods1 ?Mods2
+WHERE
+{{
+SELECT DISTINCT ?Mods1 ?Mods2
+WHERE
+{
+?Mods1 swpa_m:publicationYear <?year> .
+?Mods1 mods_m:recordContentSourceValue <?site> .#There is already some match between two records
+?Mods1 swpa_m:hasMatch ?Match .
+?Match swpa_m:hasTarget ?Mods2 .
+}
+}?Mods1 swpa_m:creatorCount ?creatorCount .GRAPH ?g1
+{
+?Mods1 mods_m:hasName ?Name1 .
+?Name1 mods_m:type ?nametype1 .
+?Name1 mods_m:authority ?auth1 .
+?Name1 xlink:href ?id .
+}GRAPH ?g2
+{
+?Mods2 mods_m:hasName ?Name2 .
+?Name2 mods_m:type ?nametype2 .
+?Name2 mods_m:authority ?auth2 .
+?Name2 xlink:href ?id .
+}
+}
+}
+FILTER ( xsd:string(?auth1) = xsd:string(?auth2) )
+FILTER ( xsd:string(?nametype1) = ‘personal’ && xsd:string(?nametype2) = ‘personal’ )
+BIND ( xsd:float( 0.2 / xsd:float(?creatorCount) ) as ?weight )
+}
