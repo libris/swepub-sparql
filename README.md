@@ -16,5 +16,5 @@ Nedan ett exempel på anrop genom i Groovy med paketet WsLite som returnerar sva
         assert 200 == response.statusCode
         return response.json   
 
-För mer information, läs i Wikin eller på [SwePubs sidor på kb.se](http://www.kb.se/libris/swepub)
+För mer information, läs i [Wikin](https://github.com/libris/swepub-sparql/wiki) eller på [SwePubs sidor på kb.se](http://www.kb.se/libris/swepub).
 
