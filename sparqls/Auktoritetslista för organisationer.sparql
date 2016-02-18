@@ -1,1 +1,25 @@
-#Auktoritetslista för organisationer#KB Organisation auktoritet listaPREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#> PREFIX countries: <http://www.bpiresearch.com/BPMO/2004/03/03/cdl/Countries#> SELECT DISTINCTxsd:string(?_label) as ?organizationxsd:string(?_authority) as ?authority xsd:string(?_id) as ?id xsd:string(?_nameLocal) as ?countryxsd:string(?_countryCodeISO3166Alpha3) as ?countryCodeISO3166Alpha3 WHERE{?ResearchOrganization a swpa_m:ResearchOrganization .?ResearchOrganization rdfs:label ?_label .?ResearchOrganization swpa_m:hasIdentity ?Identity .?ResearchOrganization swpa_m:locatedIn ?ISO3166DefinedCountry .?Identity swpa_m:authority ?_authority .?ISO3166DefinedCountry countries:countryCodeISO3166Alpha3 ?_countryCodeISO3166Alpha3 .?ISO3166DefinedCountry countries:referencesCountry ?IndependentState .?IndependentState countries:nameLocal ?_nameLocal .?Identity swpa_m:id ?_id .?Identity swpa_m:authority "kb.se"^^xsd:string .FILTER(?_authority = "kb.se"^^xsd:string)}/Jürgen
+
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#> 
+PREFIX countries: <http://www.bpiresearch.com/BPMO/2004/03/03/cdl/Countries#> 
+SELECT DISTINCT
+xsd:string(?_label) as ?organization
+xsd:string(?_authority) as ?authority 
+xsd:string(?_id) as ?id 
+xsd:string(?_nameLocal) as ?country
+xsd:string(?_countryCodeISO3166Alpha3) as ?countryCodeISO3166Alpha3 
+WHERE
+{
+?ResearchOrganization a swpa_m:ResearchOrganization .
+?ResearchOrganization rdfs:label ?_label .
+?ResearchOrganization swpa_m:hasIdentity ?Identity .
+?ResearchOrganization swpa_m:locatedIn ?ISO3166DefinedCountry .
+?Identity swpa_m:authority ?_authority .
+?ISO3166DefinedCountry countries:countryCodeISO3166Alpha3 ?_countryCodeISO3166Alpha3 .
+?ISO3166DefinedCountry countries:referencesCountry ?IndependentState .
+?IndependentState countries:nameLocal ?_nameLocal .
+?Identity swpa_m:id ?_id .
+?Identity swpa_m:authority "kb.se"^^xsd:string .
+FILTER(?_authority = "kb.se"^^xsd:string)
+}
+
+
