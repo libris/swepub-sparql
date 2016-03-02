@@ -1,0 +1,17 @@
+# Generated from Linked Data Browser navigation history
+SELECT DISTINCT
+?_languageTermValue
+COUNT(?_languageTermValue) as ?c
+WHERE
+{
+?IdentifiableRecord mods_m:hasTitleInfo ?TitleInfo .
+?TitleInfo a mods_m:TitleInfo .
+?TitleInfo mods_m:hasTitle ?Title .
+?IdentifiableRecord swpa_m:publicationTypeCode ?_publicationTypeCode .
+?IdentifiableRecord mods_m:hasLanguage ?Language .
+?Language mods_m:hasLanguageTerm ?LanguageTerm .
+?LanguageTerm mods_m:languageTermValue ?_languageTermValue .
+FILTER(xsd:string(?_publicationTypeCode) ="dok") .
+}
+GROUP BY ?_languageTermValue
+ORDER BY DESC(?c) 
