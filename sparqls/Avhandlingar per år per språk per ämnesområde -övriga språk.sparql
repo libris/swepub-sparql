@@ -1,0 +1,29 @@
+# Huvudspråk i doktorsavhandlingar under 2011-2013, 
+# fördelat på engelska, svenska och övriga språk 
+# samt åtminstone på humanvetenskaper (humaniora, samhällsvetenskap och beteendevetenskap) 
+# å ena sidan och naturvetenskap, medicin och teknik å andra sidan.
+SELECT DISTINCT
+count(?IdentifiableRecord) as ?numberOfRecords
+?_publicationYear
+?_hsv1
+WHERE
+{
+?Subject a mods_m:Subject .
+?IdentifiableRecord swpa_m:publicationTypeCode ?_publicationTypeCode .
+?IdentifiableRecord mods_m:hasLanguage ?Language .
+?Language mods_m:hasLanguageTerm ?LanguageTerm .
+?LanguageTerm mods_m:languageTermValue ?_languageTermValue .
+?IdentifiableRecord swpa_m:publicationYear ?_publicationYear .
+?IdentifiableRecord mods_m:hasSubject ?Subject .
+?Subject swpa_m:hsv1 ?_hsv1 .
+FILTER(xsd:string(?_publicationTypeCode) ="dok") .
+FILTER(xsd:string(?_languageTermValue) not in ("swe","eng")) . #For other languages
+FILTER(xsd:integer(?_publicationYear) in (2011,2012,2013)) .
+MINUS
+{
+?Language mods_m:objectPart ?_objectPart .
+FILTER(?_objectPart IN ( "defence"^^xsd:string, "summary"^^xsd:string ))
+}
+}
+GROUP BY ?_publicationYear ?_hsv1 
+ORDER BY ?_publicationYear ?_hsv1 
