@@ -1,17 +1,25 @@
-# Generated from Linked Data Browser navigation history
+# Huvudspråk i doktorsavhandlingar under året, 
+# fördelat på engelska, svenska och övriga språk 
+# samt åtminstone på humanvetenskaper (humaniora, samhällsvetenskap och beteendevetenskap) 
+# å ena sidan och naturvetenskap, medicin och teknik å andra sidan.
 SELECT DISTINCT
+?IdentifiableRecord
 ?_languageTermValue
-COUNT(?_languageTermValue) as ?c
+?_publicationYear
+?_hsv1
+?_publicationTypeCode
 WHERE
 {
-?IdentifiableRecord mods_m:hasTitleInfo ?TitleInfo .
-?TitleInfo a mods_m:TitleInfo .
-?TitleInfo mods_m:hasTitle ?Title .
+?Subject a mods_m:Subject .
 ?IdentifiableRecord swpa_m:publicationTypeCode ?_publicationTypeCode .
 ?IdentifiableRecord mods_m:hasLanguage ?Language .
 ?Language mods_m:hasLanguageTerm ?LanguageTerm .
 ?LanguageTerm mods_m:languageTermValue ?_languageTermValue .
+?IdentifiableRecord swpa_m:publicationYear ?_publicationYear .
+?IdentifiableRecord mods_m:hasSubject ?Subject .
+?Subject swpa_m:hsv1 ?_hsv1 .
 FILTER(xsd:string(?_publicationTypeCode) ="dok") .
 }
-GROUP BY ?_languageTermValue
-ORDER BY DESC(?c) 
+ORDER BY ?IdentifiableRecord
+LIMIT 500
+
