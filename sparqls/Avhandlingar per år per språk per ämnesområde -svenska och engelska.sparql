@@ -6,9 +6,9 @@ PREFIX mods_m: <http://swepub.kb.se/mods/model#>
 PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#>
 SELECT DISTINCT
 count(?IdentifiableRecord) as ?numberOfRecords
-?_publicationYear
-?_hsv1
-?_languageTermValue
+xsd:integer(?_publicationYear) as ?Year
+xsd:integer(?_hsv1) as ?HSV1
+xsd:string(?_languageTermValue) as ?Lang
 WHERE
 {
 ?Subject a mods_m:Subject .
