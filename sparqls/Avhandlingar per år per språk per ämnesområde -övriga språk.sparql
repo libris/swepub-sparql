@@ -2,10 +2,12 @@
 # fördelat på engelska, svenska och övriga språk 
 # samt åtminstone på humanvetenskaper (humaniora, samhällsvetenskap och beteendevetenskap) 
 # å ena sidan och naturvetenskap, medicin och teknik å andra sidan.
+PREFIX mods_m: <http://swepub.kb.se/mods/model#>
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#>
 SELECT DISTINCT
 count(?IdentifiableRecord) as ?numberOfRecords
 ?_publicationYear
-?_hsv1
+xsd:integer(?_hsv1) as ?HSV1
 WHERE
 {
 ?Subject a mods_m:Subject .
