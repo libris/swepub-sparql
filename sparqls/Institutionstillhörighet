@@ -1,9 +1,18 @@
-# Generated from Linked Data Browser navigation history
+# Denna fråga är ett utkast. Den visar på de affilieringar, förutom på lärosätesnivå, som en författare kopplats till. 
+# ?_authority-fältet ger vilket lärosäte som affilieringen är kopplad till.
+#
+# Obs. 1 Eftersom Swepub inte skiljer ut vilkent typ av organsiation det rör sig om kan det här finnas 
+#        både institutioner, lokala centrumbildningar och annat i svaret. 
+#
+# Obs. 2 En författare kan ha flera affilieringar samtidigt.
+#
+# Obs. 3 Den här frågan är på rådata-nivån, vilket innebär att det inte är säkert att alla författare till publikationen är med. 
+#        Detta gäller särskilt för de författare som kommer från annat lärosäte än där publikationen är registrerad. 
+#        Detta gör frågan mest användbar för analyser på samarbeten mellan institutioner/centra på samma lärosäte.
+#        
 SELECT DISTINCT
-#?Affiliation
-#?Name
-#?Record
-?_valueURI
+?Record
+?_name
 ?_authority
 ?_affiliationValue
 WHERE
@@ -16,10 +25,12 @@ WHERE
 ?Affiliation mods_m:affiliationValue ?_affiliationValue .
 ?Affiliation mods_m:valueURI ?_valueURI .
 ?Affiliation mods_m:authority ?_authority .
+?Name foaf:name ?_name .
 MINUS{
 ?Affiliation mods_m:authority ?_authority .
 FILTER(?_authority = "kb.se"^^xsd:string)
 }
 }
 
-LIMIT 5000
+
+LIMIT 5000  # Ta bort när riktiga uttag ska köras
