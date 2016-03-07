@@ -1,0 +1,25 @@
+# Generated from Linked Data Browser navigation history
+SELECT DISTINCT
+#?Affiliation
+#?Name
+#?Record
+?_valueURI
+?_authority
+?_affiliationValue
+WHERE
+{
+?Record a mods_m:Record .
+?Record mods_m:hasName ?Name .
+?Name a mods_m:Name .
+?Name mods_m:hasAffiliation ?Affiliation .
+?Affiliation a mods_m:Affiliation .
+?Affiliation mods_m:affiliationValue ?_affiliationValue .
+?Affiliation mods_m:valueURI ?_valueURI .
+?Affiliation mods_m:authority ?_authority .
+MINUS{
+?Affiliation mods_m:authority ?_authority .
+FILTER(?_authority = "kb.se"^^xsd:string)
+}
+}
+
+LIMIT 5000
