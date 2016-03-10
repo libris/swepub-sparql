@@ -1,0 +1,17 @@
+# Generated from Linked Data Browser navigation history
+SELECT DISTINCT
+?o_5
+?_constructQuery
+?_execOrder
+?_createdAt
+?Rule
+?_comment
+WHERE
+{
+?Rule a entm:Rule .
+?Rule entm:constructQuery ?_constructQuery .
+?Rule rdfs:comment ?_comment .
+?Rule entm:createdAt ?_createdAt .
+?Rule entm:execOrder ?_execOrder .
+?Rule entm:entailsToGraph ?o_5 .
+}
