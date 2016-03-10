@@ -1,0 +1,14 @@
+#type Green OA
+CONSTRUCT
+{
+?Mods swpa_m:oaType "green"^^xsd:string .
+}
+WHERE
+{
+?Mods a mods_m:Mods .
+?Mods mods_m:hasLocation ?Location .
+?Location mods_m:hasUrl ?Url .
+?Url mods_m:note ?_note .
+?Url mods_m:note "free"^^xsd:string .
+FILTER(?_note = "free"^^xsd:string)
+} 
