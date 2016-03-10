@@ -1,0 +1,34 @@
+# Missing Conference Title violation
+CONSTRUCT
+{
+?uriV a swpa_m:MissingConferenceTitleViolation .
+?uriV a swpa_m:DataQualityViolation .
+?uriV swpa_m:relatedRecord ?Record .
+}
+WHERE
+{
+?Record a mods_m:Record .
+?Record swpa_m:isPublished 1 .
+?Record mods_m:hasMods ?Mods .
+{
+SELECT DISTINCT bif:sprintf_iri('http://swepub.kb.se/SwePubAnalysis/data#MissingConferenceTitleViolation__%s', ?idvalue) as ?uriV
+?Mods
+WHERE
+{
+?Mods swpa_m:localID ?idvalue .
+?Mods mods_m:hasGenre ?Genre .
+?Genre a mods_m:Genre .
+?Genre mods_m:genreValue "kon"^^xsd:string .
+?Genre mods_m:type "publicationType"^^xsd:string .
+
+MINUS
+{
+?Mods mods_m:hasRelatedItem ?RelatedItem .
+?RelatedItem mods_m:hasTitleInfo ?TitleInfo .
+?TitleInfo mods_m:hasTitle ?Title .
+?Title mods_m:titleValue ?_titleValue .
+}
+}
+
+}
+}
