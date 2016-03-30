@@ -1,0 +1,68 @@
+#Data Violation list query
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#>
+PREFIX mods_m: <http://swepub.kb.se/mods/model#>
+PREFIX outt_m: <http://swepub.kb.se/SwePubAnalysis/OutputTypes/model#>
+SELECT DISTINCT
+?_recordID #Record ID
+?_oaipmh_SwePub #Länk till MODS-post i SwePub
+?_orgCode #Organisation
+?_violationTypeLabel #Feltyp namn
+?_incorrect #Bristfällig data
+?_severity #Allvarlighetsgrad
+?_pubYear #Publiceringsår
+?_isPublished #Publicerad
+?_publicatType #Publikationstyp
+?_outputCode  #Outputtyp
+?_uri #Länk till arkiv
+?_hsv1 #Forskningsämne 1-siffernivå (*) 
+?_hsv3 #Forskningsämne 3-siffernivå (*) 
+WHERE
+{
+?Mods swpa_m:publicationTypeCode ?_publicatType .
+?Record swpa_m:isPublished ?_isPublished .
+OPTIONAL {
+?Record swpa_m:hasOutputType ?OutputType .
+?OutputType outt_m:code ?_outputCode .
+}
+?Mods mods_m:hasIdentifier ?Identifier .
+?Identifier mods_m:type ?_uriType .
+FILTER ( xsd:string(?_uriType) = 'uri')
+?Identifier mods_m:identifierValue ?_uri .
+{
+SELECT DISTINCT ?Record ?Mods ?_recordID ?_pubYear ?_orgCode ?_violationType ?_violationTypeLabel ?_incorrect ?_severity ?_hsv1 ?_hsv3
+bif:sprintf('http://api.libris.kb.se/swepub/oaipmh?verb=GetRecord&identifier=%s&metadataPrefix=swepub_mods', ?_recordID ) as ?_oaipmh_SwePub
+WHERE
+{
+?Record mods_m:hasMods ?Mods .
+?Record a mods_m:Record .
+?Mods a mods_m:Mods .
+?Mods mods_m:identifierValue ?_recordID .
+
+?DataQualityViolation swpa_m:relatedRecord ?Record . 
+?DataQualityViolation a swpa_m:DataQualityViolation . 
+?DataQualityViolation a ?_violationType. 
+FILTER ( ?_violationType != swpa_m:DataQualityViolation )
+OPTIONAL { ?DataQualityViolation swpa_m:violatingData ?_incorrect . } 
+?_violationType swpa_m:severity ?_severity .
+?_violationType rdfs:label ?_violationTypeLabel .
+OPTIONAL
+{ 
+?Mods mods_m:hasSubject ?Subject .
+?Subject swpa_m:hsv1 ?_hsv1 .
+}
+OPTIONAL
+{ 
+?Mods mods_m:hasSubject ?Subject .
+?Subject swpa_m:hsv3 ?_hsv3 .
+}
+?Mods swpa_m:publicationYear ?_pubYear .
+?Mods mods_m:recordContentSourceValue ?_orgCode .
+
+FILTER( xsd:string(?_orgCode) IN ('slu' ) )  # byt lärosäte här
+FILTER( ?_pubYear >= 2012 )  
+FILTER( xsd:string(?_hsv3) IN ('501','502','503','504','505','506','507','508','509','601','602','603','604','605') )  #byt ämne här
+}
+#LIMIT 500
+}
+}
+#LIMIT 100
