@@ -1,28 +1,45 @@
 # mark Records eligible for De-duplication
-CONSTRUCT
-{
-?Record a swpa_m:DeduplicationEligible .
-}
-WHERE
-{
-MINUS
-{
-?Violation a swpa_m:DataQualityViolation .
-?Violation a ?ViolationType .
-?ViolationType swpa_m:severity ?severity .
-FILTER ( ?severity >=3)
-?Violation swpa_m:relatedRecord ?Record .
-}
-{
-SELECT DISTINCT ?Record
-WHERE
-{
-?Record a mods_m:Record .
-?Record swpa_m:creatorCount ?_creatorCount .
-?Record swpa_m:hasLocalCreator ?Name .
-?Record swpa_m:isInternalWork 1 .?Record mods_m:hasMods ?Mods .
-?Mods a mods_m:Mods .
-?Mods swpa_m:publicationYear ?_publicationYear .
-}
-}
+PREFIX NQUADS: <keep_loop> 
+SELECT DISTINCT ?year ?site ?pubType 
+WHERE 
+{ 
+?Mods a mods_m:Mods . 
+?Mods swpa_m:publicationYear ?year . 
+?Mods mods_m:recordContentSourceValue ?site . 
+?Mods swpa_m:publicationTypeCode ?pubType . 
+} 
+ORDER BY DESC(?year) ?site 
+
+#LOOP 
+CONSTRUCT 
+{ 
+?Record a swpa_m:DeduplicationEligible . 
+} 
+WHERE 
+{ 
+MINUS 
+{ 
+?Violation a swpa_m:DataQualityViolation . 
+?Violation a ?ViolationType . 
+?ViolationType swpa_m:severity ?severity . 
+FILTER ( ?severity >=3) 
+?Violation swpa_m:relatedRecord ?Record . 
+} 
+{ 
+SELECT DISTINCT ?Record 
+WHERE 
+{ 
+?Record a mods_m:Record . 
+?Record swpa_m:creatorCount ?_creatorCount . 
+?Record swpa_m:hasLocalCreator ?Name . 
+?Record swpa_m:isInternalWork 1 . 
+
+?Record mods_m:hasMods ?Mods . 
+?Mods a mods_m:Mods . 
+?Mods swpa_m:publicationYear <?year> . 
+?Mods mods_m:recordContentSourceValue <?site> . 
+?Mods swpa_m:publicationTypeCode <?pubType> . 
+?Mods swpa_m:publicationYear ?_publicationYear . 
+} 
+} 
 }
