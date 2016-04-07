@@ -1,4 +1,4 @@
-# mark Records eligible for De-duplication
+# mark Records eligible for De-duplication  
 PREFIX NQUADS: <keep_loop> 
 SELECT DISTINCT ?year ?site ?pubType 
 WHERE 
@@ -8,9 +8,10 @@ WHERE
 ?Mods mods_m:recordContentSourceValue ?site . 
 ?Mods swpa_m:publicationTypeCode ?pubType . 
 } 
-ORDER BY DESC(?year) ?site 
+ORDER BY ASC(?year) ?site 
 
 #LOOP 
+
 CONSTRUCT 
 { 
 ?Record a swpa_m:DeduplicationEligible . 
@@ -31,8 +32,8 @@ WHERE
 { 
 ?Record a mods_m:Record . 
 ?Record swpa_m:creatorCount ?_creatorCount . 
-?Record swpa_m:hasLocalCreator ?Name . 
-?Record swpa_m:isInternalWork 1 . 
+?Record swpa_m:hasLocalCreator ?Name .
+?Record swpa_m:isInternalWork 1 .
 
 ?Record mods_m:hasMods ?Mods . 
 ?Mods a mods_m:Mods . 
