@@ -26,15 +26,15 @@ WHERE
 ?Mods swpa_m:contentTypeCode ?_contentType .
 ?Record swpa_m:isPublished ?_isPublished .
 ?Mods mods_m:hasName ?Name .
-#?Mods swpa_m:oaType ?_OA
-?Mods swpa_m:oaType "green"^^<http://www.w3.org/2001/XMLSchema#string>
-
+#?Mods swpa_m:oaType ?_OA #If all
+?Mods swpa_m:oaType "green"^^<http://www.w3.org/2001/XMLSchema#string> # If Green
+?Mods swpa_m:oaType "gold"^^<http://www.w3.org/2001/XMLSchema#string> #If Gold
 FILTER ( ?_pubYear >= 2010 ) 
 FILTER ( ?_pubYear <= 2015 ) 
 
 FILTER ( ?_isPublished = 1 ) 
 
-#FILTER ( BOUND(?_OA ))
+#FILTER ( BOUND(?_OA )) # If all
 
 }
 LIMIT 10000000
