@@ -1,0 +1,30 @@
+PREFIX mods_m: <http://swepub.kb.se/mods/model#>
+PREFIX doaj_m: <http://swepub.kb.se/DOAJ/model#> 
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#>
+
+CONSTRUCT 
+{ 
+?Mods swpa_m:oaType "gold"^^xsd:string . 
+} 
+WHERE 
+{ 
+{ 
+SELECT DISTINCT ?Mods
+WHERE 
+{ 
+?Mods a mods_m:Mods . 
+?Mods mods_m:hasRelatedItem ?RelatedItem . 
+?RelatedItem mods_m:hasIdentifier ?Identifier . 
+?Identifier mods_m:type ?_type . 
+FILTER(?_type = "issn"^^xsd:string) 
+?Identifier mods_m:identifierValue ?_identifierValue . 
+
+
+?JournalDOAJ a doaj_m:JournalDOAJ . 
+?JournalDOAJ <http://swepub.kb.se/DOAJ/model#journal_EISSN_(online_version)> ?_issn .
+?JournalDOAJ <http://swepub.kb.se/DOAJ/model#journal_ISSN_(print_version)> ?_issnP .
+
+FILTER(?_identifierValue in(?_issn,?_issnP))
+} 
+} 
+}
