@@ -1,12 +1,18 @@
 #Antal poster per lärosäte på modsnivån
 PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#>
 PREFIX mods_m: <http://swepub.kb.se/mods/model#>
-SELECT
- xsd:string(?_orgCode) as ?org, COUNT(xsd:string(?_orgCode)) as ?count
+
+SELECT xsd:string(?_orgCode) COUNT(?_orgCode) as ?c
+WHERE
 {
-?Record mods_m:hasMods ?Mods .
-    ?Mods a mods_m:Mods .
+{
+SELECT DISTINCT ?_orgCode ?Mods
+{
+
+?Mods a mods_m:Mods .
 ?Mods mods_m:recordContentSourceValue ?_orgCode .
 }
-GROUP BY xsd:string(?_orgCode)
-ORDER BY ?org
+}
+}
+GROUP BY ?_orgCode
+ORDER BY ?_orgCode
