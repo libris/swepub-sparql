@@ -1,0 +1,17 @@
+#Antal refereegranskade, publicerade poster mellan åren 2010 och 2015
+PREFIX mods_m: <http://swepub.kb.se/mods/model#> 
+PREFIX doaj_m: <http://swepub.kb.se/DOAJ/model#> 
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#> 
+SELECT DISTINCT (count(distinct ?Record) as ?numRecord)
+WHERE
+{
+?Record a mods_m:Record .
+?Record mods_m:hasMods ?Mods .
+?Mods a mods_m:Mods .
+?Mods swpa_m:publicationYear ?_publicationYear .
+?Mods swpa_m:contentTypeCode ?_contentTypeCode .
+?Record swpa_m:isPublished ?_isPublished .
+FILTER(?_publicationYear >= 2010 && ?_publicationYear <= 2015)
+FILTER(?_isPublished >= 1 && ?_isPublished <= 1)
+FILTER(?_contentTypeCode = "ref"^^xsd:string)
+}
