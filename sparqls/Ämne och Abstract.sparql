@@ -1,0 +1,35 @@
+# All the posts in SwePub with abstracts and 3rd-level (5-digit) subject areas specified. 
+# Including fields for SwePub ID, Abstract, Subject category text label, Subject category code, Journal name (where available), ISSN (where available). 
+# Differentiates between Swedish and English abstracts by specifying language for subject area and abstract below. Se comment in code.
+#
+SELECT DISTINCT
+?_identifierValue as ?id
+?_hsv5 as ?subjectCode
+?_topicValue as ?subjectLabel
+?_abstractValue
+?_titleValueRelatedItem as ?channelTitle
+?_issnRelatedItem as ?issn
+WHERE
+{
+?Mods a mods_m:Mods .
+?Mods mods_m:hasSubject ?Subject .
+?Subject a mods_m:Subject .
+?Subject mods_m:authority ?_authority .
+?Subject swpa_m:hsv5 ?_hsv5 . # change to swpa_m:hsv3 or swpa_m:hsv1 to gett those subject levels instead
+?Subject mods_m:hasTopic ?Topic .
+?Mods mods_m:hasAbstract ?Abstract .
+?Abstract a mods_m:Abstract .
+?Abstract mods_m:abstractValue ?_abstractValue .
+OPTIONAL{
+?Mods swpa_m:issnRelatedItem ?_issnRelatedItem .
+}
+?Mods mods_m:identifierValue ?_identifierValue .
+OPTIONAL{
+?Mods swpa_m:titleValueRelatedItem ?_titleValueRelatedItem .
+}
+?Topic mods_m:topicValue ?_topicValue .
+?Topic mods_m:xmlSeqOrderIndex ?_xmlSeqOrderIndex .
+?Abstract mods_m:lang "eng"^^<http://www.w3.org/2001/XMLSchema#string> . #byt ut mot "swe"^^<http://www.w3.org/2001/XMLSchema#string>
+?Subject mods_m:lang "eng"^^<http://www.w3.org/2001/XMLSchema#string> . #byt ut mot "swe"^^<http://www.w3.org/2001/XMLSchema#string>
+FILTER(?_xmlSeqOrderIndex = 2)
+}
