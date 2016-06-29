@@ -17,6 +17,7 @@ WHERE
 {
 ?Mods swpa_m:localID ?idvalue .
 ?Mods mods_m:hasGenre ?Genre .
+#TODO:byt ut moy outputtype "conference/paper" 
 ?Genre a mods_m:Genre .
 ?Genre mods_m:genreValue "kon"^^xsd:string .
 ?Genre mods_m:type "publicationType"^^xsd:string .
