@@ -1,0 +1,41 @@
+#OA efer OA-källa. Publicerade, ref-granskade poster åren 2010-2015
+PREFIX mods_m: <http://swepub.kb.se/mods/model#> 
+PREFIX doaj_m: <http://swepub.kb.se/DOAJ/model#> 
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#> 
+SELECT
+?_oaSource
+count(distinct ?_identifierValue)
+WHERE
+{
+{
+SELECT DISTINCT
+?_oaSource
+?_recordContentSourceValue
+?_identifierValue
+?_publicationTypeCode
+?_publicationYear
+?_contentTypeCode
+?_hsv1
+WHERE
+{
+?Record a mods_m:Record .
+?Record mods_m:hasMods ?Mods .
+?Mods a mods_m:Mods .
+OPTIONAL { ?Mods swpa_m:oaSource ?_oaSource . }
+?Mods swpa_m:publicationYear ?_publicationYear .
+?Mods swpa_m:publicationTypeCode ?_publicationTypeCode .
+?Mods mods_m:recordContentSourceValue ?_recordContentSourceValue .
+?Mods swpa_m:contentTypeCode ?_contentTypeCode .
+OPTIONAL
+{
+?Mods mods_m:hasSubject ?FokusSubject .
+?FokusSubject swpa_m:hsv1 ?_hsv1 .
+}
+?Mods mods_m:identifierValue ?_identifierValue .
+?Record swpa_m:isPublished ?_isPublished .
+FILTER(?_publicationYear >= 2010 && ?_publicationYear <= 2015)
+FILTER(?_isPublished = 1)
+FILTER(?_contentTypeCode = "ref"^^xsd:string)
+}
+}
+}
