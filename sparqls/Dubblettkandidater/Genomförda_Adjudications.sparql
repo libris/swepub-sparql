@@ -1,0 +1,16 @@
+# Generated from Linked Data Browser navigation history
+SELECT DISTINCT
+?Adjudication
+?_isDuplicate
+?_validAt
+?_userName
+WHERE
+{
+?Adjudication swpa_m:compares ?Record .
+?Record a mods_m:Record .
+?Adjudication a swpa_m:Adjudication .
+?Adjudication swpa_m:isDuplicate ?_isDuplicate .
+?Adjudication <http://owl.hs.com/SemDW/admin_data#userName> ?_userName .
+?Adjudication swpa_m:validAt ?_validAt .
+}
+ORDER BY ?_validAt
