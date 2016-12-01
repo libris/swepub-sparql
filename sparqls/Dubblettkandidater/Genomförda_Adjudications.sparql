@@ -1,4 +1,5 @@
-# Generated from Linked Data Browser navigation history
+PREFIX mods_m: <http://swepub.kb.se/mods/model#>
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#>
 SELECT DISTINCT
 ?Adjudication
 ?_isDuplicate
