@@ -1,7 +1,8 @@
 # List of GREEN OA records found with oadoi.org
+PREFIX mods_m: <http://swepub.kb.se/mods/model#>
 SELECT DISTINCT
-?_identifierValue 
-?_free_fulltext_urlValue 
+xsd:string(?_identifierValue) as ?id
+xsd:string(?_free_fulltext_urlValue) as ?fulltextURL
 WHERE
 {
 ?Mods a mods_m:Mods .
@@ -18,7 +19,7 @@ MINUS{ ?Mods swpa_m:oaSource "MODS"^^xsd:string }
 
 ?Mods mods_m:recordContentSourceValue ?_recordContentSourceValue .
 # replace below <recordContentSource code> with your organizations code, i.e. cth for Chalmers, su for Stockholm University
-FILTER(?_recordContentSourceValue = "<recordContentSource code>"^^xsd:string)
+FILTER(?_recordContentSourceValue = "cth"^^xsd:string)
 
 ?OaDOI a <http://swepub.kb.se/oaDOI/model#OaDOI> .
 ?OaDOI <http://swepub.kb.se/oaDOI/model#hasDoi> ?Doi .
