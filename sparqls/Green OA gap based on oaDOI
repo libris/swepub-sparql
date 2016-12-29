@@ -2,7 +2,6 @@
 SELECT DISTINCT
 ?_identifierValue 
 ?_free_fulltext_urlValue 
-?_recordContentSourceValue 
 WHERE
 {
 ?Mods a mods_m:Mods .
