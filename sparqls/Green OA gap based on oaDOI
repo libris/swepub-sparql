@@ -19,7 +19,7 @@ MINUS{ ?Mods swpa_m:oaSource "MODS"^^xsd:string }
 
 ?Mods mods_m:recordContentSourceValue ?_recordContentSourceValue .
 # replace below <recordContentSource code> with your organizations code, i.e. cth for Chalmers, su for Stockholm University
-FILTER(?_recordContentSourceValue = "cth"^^xsd:string)
+FILTER(?_recordContentSourceValue = "<recordContentSource code>"^^xsd:string)
 
 ?OaDOI a <http://swepub.kb.se/oaDOI/model#OaDOI> .
 ?OaDOI <http://swepub.kb.se/oaDOI/model#hasDoi> ?Doi .
