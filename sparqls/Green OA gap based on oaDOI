@@ -1,0 +1,29 @@
+# List of GREEN OA records found with oadoi.org
+SELECT DISTINCT
+?_identifierValue 
+?_free_fulltext_urlValue 
+?_recordContentSourceValue 
+WHERE
+{
+?Mods a mods_m:Mods .
+?Mods mods_m:identifierValue ?_identifierValue .
+?Mods mods_m:hasIdentifier ?Identifier .
+?Mods mods_m:hasIdentifier ?IdentityDOI .
+?IdentityDOI mods_m:doiValue ?_doiValue .
+
+?Mods swpa_m:oaType "green"^^xsd:string .
+
+?Mods swpa_m:oaSource "oaDOI"^^xsd:string .
+# Exclude records marked as GREEN by the source system
+MINUS{ ?Mods swpa_m:oaSource "MODS"^^xsd:string } 
+
+?Mods mods_m:recordContentSourceValue ?_recordContentSourceValue .
+# replace below <recordContentSource code> with your organizations code, i.e. cth for Chalmers, su for Stockholm University
+FILTER(?_recordContentSourceValue = "<recordContentSource code>"^^xsd:string)
+
+?OaDOI a <http://swepub.kb.se/oaDOI/model#OaDOI> .
+?OaDOI <http://swepub.kb.se/oaDOI/model#hasDoi> ?Doi .
+?Doi <http://swepub.kb.se/oaDOI/model#doiValue> ?_doiValue .
+?OaDOI <http://swepub.kb.se/oaDOI/model#hasFree_fulltext_url> ?Free_fulltext_url .
+?Free_fulltext_url <http://swepub.kb.se/oaDOI/model#free_fulltext_urlValue> ?_free_fulltext_urlValue .
+}
