@@ -1,0 +1,18 @@
+# Generated from Linked Data Browser navigation history
+SELECT DISTINCT
+?_titleValue
+?_descriptionValue
+WHERE
+{
+?DeduplicationEligible mods_m:hasName ?Name .
+?Name mods_m:hasDescription ?Description .
+?Description mods_m:descriptionValue ?_descriptionValue .
+?Description mods_m:type ?_type .
+?DeduplicationEligible mods_m:hasMods ?IdentifiableRecord .
+?IdentifiableRecord mods_m:hasTitleInfo ?TitleInfo .
+?TitleInfo mods_m:hasTitle ?Title .
+?Title mods_m:titleValue ?_titleValue .
+FILTER(?_type = "orcid"^^xsd:string)
+FILTER(?_descriptionValue = "ORCID_TO_LOOKUP"^^xsd:string)
+}
+LIMIT 50
