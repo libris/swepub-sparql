@@ -2,6 +2,8 @@
 # Including fields for SwePub ID, Abstract, Subject category text label, Subject category code, Journal name (where available), ISSN (where available). 
 # Differentiates between Swedish and English abstracts by specifying language for subject area and abstract below. Se comment in code.
 #
+PREFIX mods_m: <http://swepub.kb.se/mods/model#>
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#>
 SELECT DISTINCT
 ?_identifierValue as ?id
 ?_hsv5 as ?subjectCode
