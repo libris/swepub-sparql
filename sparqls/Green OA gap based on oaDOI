@@ -1,5 +1,6 @@
 # List of GREEN OA records found with oadoi.org
 PREFIX mods_m: <http://swepub.kb.se/mods/model#>
+PREFIX swpa_m: <http://swepub.kb.se/SwePubAnalysis/model#>
 SELECT DISTINCT
 xsd:string(?_identifierValue) as ?id
 xsd:string(?_free_fulltext_urlValue) as ?fulltextURL
